@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
-use InstaLite;
+use InstaLite\InstaLite;
 $instagram = new InstaLite("username", "password", "proxy");
 /** search user (return array standart instagram) **/
 $user = $instagram->searchUser('alex')->id();
