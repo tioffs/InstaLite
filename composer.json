@@ -1,0 +1,22 @@
+{
+    "name": "tioffs/instalite",
+    "version": "1.0.0",
+    "description": "An easy-to-use PHP Class for accessing Instagram's API.",
+    "keywords": ["instalite", "instagram", "php", "api", "web", "insta"],
+    "type": "library",
+    "homepage": "https://github.com/tioffs/instalite",
+    "license": "MIT",
+    "author": "Tioffs <me@timlab.ru> (https://timlab.ru)",
+    "require": {
+      "php": ">=7.2"
+    },
+    "autoload": {
+      "psr-4": {
+        "InstaLite\\": "src/InstaLite/"
+      }
+    },
+    "support": {
+      "email": "me@timlab.ru"
+    },
+    "minimum-stability": "dev"
+}
