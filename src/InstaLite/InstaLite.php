@@ -132,6 +132,11 @@ class InstaLite
      */
     private function __updateSession()
     {
+        if (!is_dir($this->sessionPatch)) {
+            if (!mkdir($this->sessionPatch, 0755)) {
+                throw new Exception("Error create folder {$this->sessionPatch}/session");
+            }
+        }
         file_put_contents($this->sessionPatch . $this->username, json_encode([
             'session'   => $this->session,
             'proxy'     => $this->proxy,
