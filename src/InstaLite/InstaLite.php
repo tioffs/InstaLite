@@ -40,6 +40,12 @@ class InstaLite
     /** Search temp user array */
     private $userList;
 
+    public const IMAGE_TYPES = [
+        IMAGETYPE_JPEG => 'JPEG',
+        IMAGETYPE_PNG => 'PNG',
+        IMAGETYPE_GIF => 'GIF',
+    ];
+
     /**
      * __construct
      *
@@ -108,7 +114,7 @@ class InstaLite
 
     /**
      * __restoreSession
-     * - load session, search file name username 
+     * - load session, search file name username
      * @return bool
      */
     private function __restoreSession(): bool
@@ -159,13 +165,17 @@ class InstaLite
         if (!file_exists($photo)) {
             throw new Exception("File [$photo] not found");
         }
+
+        $exifType = exif_imagetype($photo);
+        $type = self::IMAGE_TYPES[$exifType];
+
         $photo_id = round(microtime(true) * 1000);
         $file_temp = __DIR__ . '/' . $this->uuid4();
         list($width, $height, $image_type) = getimagesize(realpath($photo));
-        $srcImage = ImageCreateFromJPEG($photo);
+        $srcImage = call_user_func("ImageCreateFrom$type", $photo);
         $resImage = ImageCreateTrueColor($width, $height);
         ImageCopyResampled($resImage, $srcImage, 0, 0, 0, 0, $width, $height, $width, $height);
-        ImageJPEG($srcImage, $file_temp, 100);
+        call_user_func("Image$type", $srcImage, $file_temp, 100);
         ImageDestroy($srcImage);
 
         $response = Request::post($this->web . 'rupload_igphoto/fb_uploader_' . $photo_id)
