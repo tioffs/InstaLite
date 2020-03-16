@@ -175,7 +175,16 @@ class InstaLite
         $srcImage = call_user_func("ImageCreateFrom$type", $photo);
         $resImage = ImageCreateTrueColor($width, $height);
         ImageCopyResampled($resImage, $srcImage, 0, 0, 0, 0, $width, $height, $width, $height);
-        call_user_func("Image$type", $srcImage, $file_temp, 100);
+        switch ($exifType) {
+            case IMAGETYPE_PNG:
+                ImagePNG($srcImage, $file_temp, 9);
+                break;
+            case IMAGETYPE_JPEG:
+                ImageJPEG($srcImage, $file_temp, 100);
+                break;
+            default:
+                throw new Exception('Image format not supported');
+        }
         ImageDestroy($srcImage);
 
         $response = Request::post($this->web . 'rupload_igphoto/fb_uploader_' . $photo_id)
